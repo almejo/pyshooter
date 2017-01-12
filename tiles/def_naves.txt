@@ -1,0 +1,4 @@
+#probando
+4 nave 32 32
+1 enemy 32 32
+8 enemy_ball 32 32

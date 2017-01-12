@@ -1,0 +1,6 @@
+#probando
+nave 4 nave
+enemy_triangle 1 enemy
+enemy_ring 8 enemy_ball
+shoot_missile 5 shoot_missile
+shoot_normal 1 shoot_normal
