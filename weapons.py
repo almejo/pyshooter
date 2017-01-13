@@ -10,7 +10,7 @@ class EnemyShoot(pygame.sprite.Sprite):
     def __init__(self, center, velocity):
         pygame.sprite.Sprite.__init__(self)
         self.animation = animation.Animation('shoot_normal')
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
         self.rect = self.animation.get_rect()
         self.rect.center = center
         self.velocity = velocity
@@ -27,7 +27,7 @@ class Shoot(pygame.sprite.Sprite):
     def __init__(self, point):
         pygame.sprite.Sprite.__init__(self)
         self.animation = animation.Animation('shoot_normal')
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
         self.rect = self.animation.get_rect()
         self.rect.center = point
 
@@ -59,7 +59,7 @@ class MissileSprite(pygame.sprite.Sprite):
     def __init__(self, center, side):
         pygame.sprite.Sprite.__init__(self)
         self.animation = animation.Animation('shoot_missile', 20)
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
         self.rect = self.animation.get_rect()
         self.rect.center = center
         self.velocity_x = 1 * side
@@ -67,7 +67,7 @@ class MissileSprite(pygame.sprite.Sprite):
         self.counter = 0
 
     def update(self):
-        self.anim = self.animation.anim()
+        self.anim = self.animation.animate()
         self.rect.move_ip(self.velocity_x, self.velocity_y)
         if self.rect.bottom < 0: self.kill()
         if self.counter > 30: self.velocity_x = 0

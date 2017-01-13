@@ -16,7 +16,7 @@ class Nave(pygame.sprite.Sprite):
 
         animation.init_animations()
         self.animation = animation.Animation('nave', 10)
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
         self.rect = self.animation.get_rect()
 
         self.counter = 0
@@ -47,7 +47,7 @@ class Nave(pygame.sprite.Sprite):
         elif self.rect.right > constants.SCREEN_WIDTH:
             self.rect.right = constants.SCREEN_WIDTH
 
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
 
         if self.rect.top <= 0:
             self.rect.top = 0
@@ -89,13 +89,17 @@ class Nave(pygame.sprite.Sprite):
                     self.key_x_buff.remove(-4)
 
     def get_weapon_bullets(self):
-        self.weapon.get_bullets() if self.weapon is not None else 0
+        if self.weapon is not None:
+            return self.weapon.get_bullets()
+        return 0
 
 
 class AEnemy(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.counter = 0
+        self.x_velocity = 0
+        self.y_velocity = 0
         pass
 
     def update(self):
@@ -105,15 +109,15 @@ class AEnemy(pygame.sprite.Sprite):
 
 
 class EnemyRing(AEnemy):
-    def __init__(self, centerx):
+    def __init__(self, center_x):
         AEnemy.__init__(self)
         self.start_time = pygame.time.get_ticks()
         self.x_velocity = 0
         self.y_velocity = 3
         self.animation = animation.Animation('enemy_ring', 20)
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
         self.rect = self.animation.get_rect()
-        self.rect.center = (centerx, 0 - self.rect.height)
+        self.rect.center = (center_x, 0 - self.rect.height)
 
         self.first = random.randint(50, 150)
         self.second = self.first + random.randint(50, 150)
@@ -124,22 +128,22 @@ class EnemyRing(AEnemy):
             group.add(weapons.EnemyShoot(self.rect.midtop, (-1, 2)))
 
     def step(self):
-        if self.counter > self.first and self.counter < self.second:
+        if self.first < self.counter < self.second:
             self.y_velocity = 0
         elif self.counter > self.second:
             self.y_velocity = 4
 
         if self.rect.bottom > constants.SCREEN_HEIGHT:
             self.kill()
-        self.image = self.animation.anim()
+        self.image = self.animation.animate()
 
 
 class Enemy(AEnemy):
     def __init__(self):
         AEnemy.__init__(self)
-        self.anim = animation.Animation('enemy_triangle')
-        self.image = self.anim.anim()
-        self.rect = self.anim.get_rect()
+        self.animation = animation.Animation('enemy_triangle')
+        self.image = self.animation.animate()
+        self.rect = self.animation.get_rect()
 
         self.rect.center = (constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4)
         self.x_velocity = random.randint(-5, 5)
@@ -150,7 +154,7 @@ class Enemy(AEnemy):
         if self.rect.top < 0 or self.rect.bottom >= constants.SCREEN_HEIGHT - 32: self.y_velocity = -self.y_velocity
         if self.x_velocity == 0: self.x_velocity = random.randint(-5, 5)
         if self.y_velocity == 0: self.y_velocity = random.randint(-5, 5)
-        self.image = self.anim.anim()
+        self.image = self.animation.animate()
 
     def do_shoot(self, group):
         if len(group) < 30 and self.counter % 70 == 0 or self.counter % 90 == 0 or self.counter % 110 == 0:

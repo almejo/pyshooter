@@ -44,12 +44,13 @@ class Animation:
     def get_rect(self):
         return Rect(self.rect)
 
-    def anim(self):
+    def animate(self):
         image = self.images[self.frame]
         if self.counter % self.steps == 0:
             self.frame += 1
         self.counter += 1
-        if self.frame == self.total_frames: self.frame = 0
+        if self.frame == self.total_frames:
+            self.frame = 0
         return image
 
 
